@@ -1,0 +1,97 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="60">
+            <item index="0" class="java.lang.String" itemvalue="PyJWT" />
+            <item index="1" class="java.lang.String" itemvalue="djangorestframework-simplejwt" />
+            <item index="2" class="java.lang.String" itemvalue="Django" />
+            <item index="3" class="java.lang.String" itemvalue="psycopg2-binary" />
+            <item index="4" class="java.lang.String" itemvalue="python-dotenv" />
+            <item index="5" class="java.lang.String" itemvalue="asgiref" />
+            <item index="6" class="java.lang.String" itemvalue="pytz" />
+            <item index="7" class="java.lang.String" itemvalue="djangorestframework" />
+            <item index="8" class="java.lang.String" itemvalue="sqlparse" />
+            <item index="9" class="java.lang.String" itemvalue="users" />
+            <item index="10" class="java.lang.String" itemvalue="httpx" />
+            <item index="11" class="java.lang.String" itemvalue="scikit-learn" />
+            <item index="12" class="java.lang.String" itemvalue="pybase64" />
+            <item index="13" class="java.lang.String" itemvalue="python-dateutil" />
+            <item index="14" class="java.lang.String" itemvalue="h11" />
+            <item index="15" class="java.lang.String" itemvalue="rfc3986" />
+            <item index="16" class="java.lang.String" itemvalue="sniffio" />
+            <item index="17" class="java.lang.String" itemvalue="newrelic" />
+            <item index="18" class="java.lang.String" itemvalue="DateTime" />
+            <item index="19" class="java.lang.String" itemvalue="NLTK" />
+            <item index="20" class="java.lang.String" itemvalue="structlog" />
+            <item index="21" class="java.lang.String" itemvalue="certifi" />
+            <item index="22" class="java.lang.String" itemvalue="anyio" />
+            <item index="23" class="java.lang.String" itemvalue="urllib3" />
+            <item index="24" class="java.lang.String" itemvalue="SpaCy" />
+            <item index="25" class="java.lang.String" itemvalue="cassandra-driver" />
+            <item index="26" class="java.lang.String" itemvalue="botocore" />
+            <item index="27" class="java.lang.String" itemvalue="click" />
+            <item index="28" class="java.lang.String" itemvalue="geomet" />
+            <item index="29" class="java.lang.String" itemvalue="bcrypt" />
+            <item index="30" class="java.lang.String" itemvalue="jmespath" />
+            <item index="31" class="java.lang.String" itemvalue="boto3" />
+            <item index="32" class="java.lang.String" itemvalue="s3transfer" />
+            <item index="33" class="java.lang.String" itemvalue="pika" />
+            <item index="34" class="java.lang.String" itemvalue="pycryptodome" />
+            <item index="35" class="java.lang.String" itemvalue="flask" />
+            <item index="36" class="java.lang.String" itemvalue="httpcore" />
+            <item index="37" class="java.lang.String" itemvalue="idna" />
+            <item index="38" class="java.lang.String" itemvalue="uritemplate" />
+            <item index="39" class="java.lang.String" itemvalue="protobuf" />
+            <item index="40" class="java.lang.String" itemvalue="rsa" />
+            <item index="41" class="java.lang.String" itemvalue="google-crc32c" />
+            <item index="42" class="java.lang.String" itemvalue="googleapis-common-protos" />
+            <item index="43" class="java.lang.String" itemvalue="tzdata" />
+            <item index="44" class="java.lang.String" itemvalue="httplib2" />
+            <item index="45" class="java.lang.String" itemvalue="google-cloud-storage" />
+            <item index="46" class="java.lang.String" itemvalue="django-storages" />
+            <item index="47" class="java.lang.String" itemvalue="pyasn1" />
+            <item index="48" class="java.lang.String" itemvalue="requests" />
+            <item index="49" class="java.lang.String" itemvalue="pyasn1-modules" />
+            <item index="50" class="java.lang.String" itemvalue="google-resumable-media" />
+            <item index="51" class="java.lang.String" itemvalue="cachetools" />
+            <item index="52" class="java.lang.String" itemvalue="charset-normalizer" />
+            <item index="53" class="java.lang.String" itemvalue="google-auth-httplib2" />
+            <item index="54" class="java.lang.String" itemvalue="google-api-python-client" />
+            <item index="55" class="java.lang.String" itemvalue="pyparsing" />
+            <item index="56" class="java.lang.String" itemvalue="django-cors-headers" />
+            <item index="57" class="java.lang.String" itemvalue="google-cloud-core" />
+            <item index="58" class="java.lang.String" itemvalue="google-api-core" />
+            <item index="59" class="java.lang.String" itemvalue="google-auth" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E501" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N803" />
+          <option value="N802" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="backend.additional_hours.models.users" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="SqlNoDataSourceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>
