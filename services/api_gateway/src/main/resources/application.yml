@@ -1,6 +1,8 @@
 server:
   port: 2004
 spring:
+  application:
+    name: api-gateway
   rabbitmq:
     host: localhost
     port: 5672
