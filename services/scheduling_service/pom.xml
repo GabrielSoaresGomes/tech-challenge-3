@@ -9,9 +9,9 @@
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>api-gateway</artifactId>
-	<name>api-gateway</name>
-	<description>API Gateway</description>
+	<artifactId>scheduling_service</artifactId>
+	<name>scheduling_service</name>
+	<description>Scheduling Service</description>
 
 
 	<dependencies>

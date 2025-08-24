@@ -1,7 +1,8 @@
 version: "3.9"
 services:
   rabbitmq:
-    image: rabbitmq:3.13-management
+    image: rabbitmq:3.13-management-alpine
+    container_name: tc3-rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -13,3 +14,40 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
+
+  api-gateway:
+    build:
+      context: ..
+      dockerfile: services/api_gateway/Dockerfile
+    image: tc3/api-gateway:local
+    container_name: tc3-api-gateway
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: user
+      SPRING_RABBITMQ_PASSWORD: 123456
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "2004:2004"
+    restart: unless-stopped
+
+  scheduling-service:
+    build:
+      context: ..
+      dockerfile: services/scheduling_service/Dockerfile
+    image: tc3/scheduling-service:local
+    container_name: tc3-scheduling-service
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: user
+      SPRING_RABBITMQ_PASSWORD: 123456
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "2003:2003"
+    restart: unless-stopped
