@@ -10,8 +10,6 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY --from=build /build/services/gateway_service/target/*.jar app.jar
-
-EXPOSE 6761
+COPY --from=build /build/services/auth_service/target/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,39 +1,22 @@
 name: tech-challenge-03
 
 services:
-  service-registry:
-    build:
-      context: ..
-      dockerfile: services/registry_service/Dockerfile
-    image: tc3/service-registry:local
-    container_name: service-registry
-    ports:
-      - "8761:8761"
-    restart: unless-stopped
-    networks:
-      - app-network
-
   gateway-service:
     build:
       context: ..
       dockerfile: services/gateway_service/Dockerfile
     image: tc3/gateway-service:local
-#    container_name: tc3-gateway-service
+    container_name: tc3-gateway-service
     environment:
-      - SERVICE_REGISTRY_URL=http://service-registry:8761
+      - AUTH_MS_URL=http://tc3-auth-service:8081
+      - TEST_MS_URL=http://tc3-test-service:8082
     ports:
       - "8080:8080"
     restart: unless-stopped
-    networks:
-      - app-network
-    links:
-      - service-registry:service-registry
-    depends_on:
-      - service-registry
 
-  postgres-auth:
+  auth-postgres:
     image: postgres:latest
-#    container_name: tc3-postgres-auth
+    container_name: tc3-auth-postgres
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
@@ -46,21 +29,30 @@ services:
       context: ..
       dockerfile: services/auth_service/Dockerfile
     image: tc3/auth-service:local
-#    container_name: tc3-auth-service
+    container_name: tc3-auth-service
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-auth:5432/tech-challenge-03-auth
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://tc3-auth-postgres:5432/tech-challenge-03-auth
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
-      - SERVICE_REGISTRY_URL=http://service-registry:8761
+      - TRUSTED_HOSTS=http://tc3-test-service
     restart: unless-stopped
     depends_on:
-      - service-registry
-      - postgres-auth
+      - auth-postgres
+
+  test-service:
+    build:
+      context: ..
+      dockerfile: services/test_service/Dockerfile
+    image: tc3/test-service:local
+    container_name: tc3-test-service
+    environment:
+      - AUTH_MS_URL=http://tc3-auth-service:8081
+    restart: unless-stopped
 
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
-#    container_name: tc3-rabbitmq
+    container_name: tc3-rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -79,7 +71,7 @@ services:
       context: ..
       dockerfile: services/api_gateway/Dockerfile
     image: tc3/api-gateway:local
-#    container_name: tc3-api-gateway
+    container_name: tc3-api-gateway
     environment:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
@@ -97,7 +89,7 @@ services:
       context: ..
       dockerfile: services/scheduling_service/Dockerfile
     image: tc3/scheduling-service:local
-#    container_name: tc3-scheduling-service
+    container_name: tc3-scheduling-service
     environment:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
@@ -109,7 +101,3 @@ services:
     ports:
       - "2003:2003"
     restart: unless-stopped
-
-networks:
-  app-network:
-    driver: bridge

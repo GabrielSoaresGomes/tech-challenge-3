@@ -12,6 +12,6 @@ WORKDIR /app
 
 COPY --from=build /build/services/gateway_service/target/*.jar app.jar
 
-EXPOSE 6761
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

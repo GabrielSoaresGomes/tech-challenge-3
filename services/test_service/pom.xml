@@ -9,8 +9,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>test</artifactId>
-    <name>test</name>
+    <artifactId>test-service</artifactId>
+    <name>test-service</name>
     <description>Test Service</description>
 
     <dependencies>
@@ -25,11 +25,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

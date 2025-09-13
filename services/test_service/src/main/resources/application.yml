@@ -18,3 +18,7 @@ eureka:
 
 jwt:
   public.key: classpath:app.pub
+
+app:
+  services:
+    auth: ${AUTH_MS_URL:http://localhost:8081}

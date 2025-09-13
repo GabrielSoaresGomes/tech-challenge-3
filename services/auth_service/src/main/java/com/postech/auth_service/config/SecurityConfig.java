@@ -21,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +30,8 @@ public class SecurityConfig {
     private RSAPublicKey publicKey;
     @Value("${jwt.private.key}")
     private RSAPrivateKey privateKey;
+    @Value("${app.security.trustedHosts}")
+    private List<String> trustedHosts;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,7 +39,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorize -> {
             authorize.requestMatchers("/login").permitAll();
-            authorize.requestMatchers("/internal/**").access(new ServiceBasedAuthorizationManager());
+            authorize.requestMatchers("/internal/**").access(new ServiceBasedAuthorizationManager(trustedHosts));
             authorize.anyRequest().authenticated();
         });
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
