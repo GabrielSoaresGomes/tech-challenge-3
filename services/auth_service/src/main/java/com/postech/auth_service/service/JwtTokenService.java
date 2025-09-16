@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +22,7 @@ public class JwtTokenService {
                 .issuer("tech-challenge")
                 .issuedAt(now)
                 .expiresAt(now.plusMillis(60 * 60 * 1000)) // 1 hour
-                .claim("user", user.getId())
+                .subject(Objects.toString(user.getId(), null))
                 .claim("scope", "user:read")
                 .build();
 
