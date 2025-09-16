@@ -16,6 +16,6 @@ public class LoginController {
 
     @PostMapping
     public String login(@RequestBody LoginRequest credentials) {
-        return loginService.validate(credentials.getUsername(), credentials.getPassword());
+        return loginService.validate(credentials.username(), credentials.password());
     }
 }

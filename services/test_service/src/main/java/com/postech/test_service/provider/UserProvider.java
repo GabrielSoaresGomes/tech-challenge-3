@@ -4,6 +4,7 @@ import com.postech.test_service.client.UserClient;
 import com.postech.test_service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.JwtClaimAccessor;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,7 @@ public class UserProvider {
         }
 
         var userId = Optional.ofNullable(((JwtAuthenticationToken) authentication).getToken())
-                .filter(token -> token.getClaims().containsKey("user"))
-                .map(token -> token.getClaimAsString("user"))
+                .map(JwtClaimAccessor::getSubject)
                 .map(Long::parseLong)
                 .orElse(null);
         if (Objects.isNull(userId)) {
