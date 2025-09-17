@@ -38,7 +38,7 @@ public class SecurityConfig {
         http.cors(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/login").permitAll();
+            authorize.requestMatchers("/login", "/user/**").permitAll();
             authorize.requestMatchers("/internal/**").access(new ServiceBasedAuthorizationManager(trustedHosts));
             authorize.anyRequest().authenticated();
         });

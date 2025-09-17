@@ -1,6 +1,6 @@
 package com.postech.auth_service.controller;
 
-import com.postech.auth_service.dto.LoginRequest;
+import com.postech.auth_service.dto.LoginRequestDto;
 import com.postech.auth_service.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public String login(@RequestBody LoginRequest credentials) {
+    public String login(@RequestBody LoginRequestDto credentials) {
         return loginService.validate(credentials.username(), credentials.password());
     }
 }
