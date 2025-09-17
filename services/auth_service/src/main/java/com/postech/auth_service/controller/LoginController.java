@@ -1,0 +1,21 @@
+package com.postech.auth_service.controller;
+
+import com.postech.auth_service.dto.LoginRequestDto;
+import com.postech.auth_service.service.LoginService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/login")
+public class LoginController {
+    private final LoginService loginService;
+
+    @PostMapping
+    public String login(@RequestBody LoginRequestDto credentials) {
+        return loginService.validate(credentials.username(), credentials.password());
+    }
+}
