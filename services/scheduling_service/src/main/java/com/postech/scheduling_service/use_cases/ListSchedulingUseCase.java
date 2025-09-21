@@ -28,29 +28,7 @@ public class ListSchedulingUseCase implements UseCase<Void, List<SchedulingDto>>
         var schedules = this.repository.findAll();
 
         return schedules.stream()
-                .map(schedule -> new SchedulingDto(
-                        schedule.getId(),
-                        schedule.getPatientId(),
-                        schedule.getDoctorId(),
-                        schedule.getStartAt(),
-                        schedule.getEndAt(),
-                        schedule.getStatus().toString(),
-                        schedule.getCreatedAt(),
-                        schedule.getUpdatedAt()
-
-                ))
+                .map(mapper::toDto)
                 .toList();
     }
-
-    @Builder
-    public record ListSchedulingParams(
-            Long patientId,
-            Long doctorId,
-            String status,
-            LocalDateTime fromDate,
-            LocalDateTime toDate,
-            int page,
-            int size,
-            Sort sort
-    ) {}
 }

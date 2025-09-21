@@ -27,14 +27,6 @@ public class SchedulingMapper {
         );
     }
 
-    public Page<SchedulingDto> toDtoPage(Page<Scheduling> page) {
-        return page.map(this::toDto);
-    }
-
-    public List<SchedulingDto> toDtoList(List<Scheduling> list) {
-        return list == null ? List.of() : list.stream().map(this::toDto).toList();
-    }
-
     public Scheduling toEntity(CreateSchedulingDto dto) {
         if (dto == null) return null;
         var e = new Scheduling();
@@ -45,22 +37,4 @@ public class SchedulingMapper {
         e.setStatus(StatusEnum.SCHEDULED);
         return e;
     }
-
-//    public void updateEntity(UpdateSchedulingDto dto, Scheduling e) {
-//        if (dto == null || e == null) return;
-//
-//        if (dto.startAt() != null) e.setStartAt(dto.startAt());
-//        if (dto.endAt() != null)   e.setEndAt(dto.endAt());
-//
-//        if (dto.status() != null && !dto.status().isBlank()) {
-//            try {
-//                e.setStatus(StatusEnum.valueOf(dto.status().toUpperCase()));
-//            } catch (IllegalArgumentException ex) {
-//                throw new IllegalArgumentException(
-//                        "Status inválido: " + dto.status() +
-//                                ". Aceitos: SCHEDULED, COMPLETED, CANCELED, NO_SHOW, RESCHEDULED"
-//                );
-//            }
-//        }
-//    }
 }

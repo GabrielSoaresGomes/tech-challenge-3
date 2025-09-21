@@ -17,6 +17,7 @@ public class UpdateSchedulingUseCase implements UseCase<UpdateSchedulingDto, Sch
     private final SchedulingRepository repository;
     private final SchedulingMapper mapper;
 
+    @Transactional
     @Override
     public SchedulingDto execute(UpdateSchedulingDto params) {
         var scheduling = this.repository.getReferenceById(params.getId());
@@ -27,16 +28,7 @@ public class UpdateSchedulingUseCase implements UseCase<UpdateSchedulingDto, Sch
 
         var savedScheduling = this.repository.save(scheduling);
 
-        return new SchedulingDto(
-                savedScheduling.getId(),
-                savedScheduling.getPatientId(),
-                savedScheduling.getDoctorId(),
-                savedScheduling.getStartAt(),
-                savedScheduling.getEndAt(),
-                savedScheduling.getStatus().name(),
-                savedScheduling.getCreatedAt(),
-                savedScheduling.getUpdatedAt()
-        );
+        return mapper.toDto(savedScheduling);
     }
 }
 
