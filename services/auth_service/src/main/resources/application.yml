@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/tech-challenge-03-auth
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: root
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+jwt:
+  public.key: classpath:app.pub
+  private.key: classpath:app.key
+
+app:
+  security:
+    trustedHosts: ${TRUSTED_HOSTS:http://localhost}
