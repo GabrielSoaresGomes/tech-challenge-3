@@ -46,21 +46,21 @@ public class SchedulingMapper {
         return e;
     }
 
-    public void updateEntity(UpdateSchedulingDto dto, Scheduling e) {
-        if (dto == null || e == null) return;
-
-        if (dto.startAt() != null) e.setStartAt(dto.startAt());
-        if (dto.endAt() != null)   e.setEndAt(dto.endAt());
-
-        if (dto.status() != null && !dto.status().isBlank()) {
-            try {
-                e.setStatus(StatusEnum.valueOf(dto.status().toUpperCase()));
-            } catch (IllegalArgumentException ex) {
-                throw new IllegalArgumentException(
-                        "Status inválido: " + dto.status() +
-                                ". Aceitos: SCHEDULED, COMPLETED, CANCELED, NO_SHOW, RESCHEDULED"
-                );
-            }
-        }
-    }
+//    public void updateEntity(UpdateSchedulingDto dto, Scheduling e) {
+//        if (dto == null || e == null) return;
+//
+//        if (dto.startAt() != null) e.setStartAt(dto.startAt());
+//        if (dto.endAt() != null)   e.setEndAt(dto.endAt());
+//
+//        if (dto.status() != null && !dto.status().isBlank()) {
+//            try {
+//                e.setStatus(StatusEnum.valueOf(dto.status().toUpperCase()));
+//            } catch (IllegalArgumentException ex) {
+//                throw new IllegalArgumentException(
+//                        "Status inválido: " + dto.status() +
+//                                ". Aceitos: SCHEDULED, COMPLETED, CANCELED, NO_SHOW, RESCHEDULED"
+//                );
+//            }
+//        }
+//    }
 }

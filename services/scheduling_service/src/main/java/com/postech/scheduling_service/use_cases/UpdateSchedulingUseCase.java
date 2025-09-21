@@ -2,7 +2,7 @@ package com.postech.scheduling_service.use_cases;
 
 import com.postech.scheduling_service.dto.SchedulingDto;
 import com.postech.scheduling_service.dto.UpdateSchedulingDto;
-import com.postech.scheduling_service.entity.Scheduling;
+import com.postech.scheduling_service.enums.StatusEnum;
 import com.postech.scheduling_service.mapper.SchedulingMapper;
 import com.postech.scheduling_service.repository.SchedulingRepository;
 import com.postech.scheduling_service.use_cases.base.UseCase;
@@ -18,16 +18,25 @@ public class UpdateSchedulingUseCase implements UseCase<UpdateSchedulingDto, Sch
     private final SchedulingMapper mapper;
 
     @Override
-    @Transactional
     public SchedulingDto execute(UpdateSchedulingDto params) {
-        Scheduling existing = repository.findById(params.id())
-                .orElseThrow(() -> new IllegalArgumentException("Scheduling não encontrado"));
+        var scheduling = this.repository.getReferenceById(params.getId());
+        scheduling.setId(params.getId());
+        scheduling.setStartAt(params.getStartAt());
+        scheduling.setEndAt(params.getEndAt());
+        scheduling.setStatus(params.getStatus());
 
-        mapper.updateEntity(params, existing);
+        var savedScheduling = this.repository.save(scheduling);
 
-        Scheduling updated = repository.save(existing);
-
-        return mapper.toDto(updated);
+        return new SchedulingDto(
+                savedScheduling.getId(),
+                savedScheduling.getPatientId(),
+                savedScheduling.getDoctorId(),
+                savedScheduling.getStartAt(),
+                savedScheduling.getEndAt(),
+                savedScheduling.getStatus().name(),
+                savedScheduling.getCreatedAt(),
+                savedScheduling.getUpdatedAt()
+        );
     }
 }
 

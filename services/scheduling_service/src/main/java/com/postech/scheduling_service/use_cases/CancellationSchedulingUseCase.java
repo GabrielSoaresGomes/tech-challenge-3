@@ -20,12 +20,10 @@ public class CancellationSchedulingUseCase implements UseCase<Long, SchedulingDt
     @Override
     @Transactional
     public SchedulingDto execute(Long schedulingId) {
-        Scheduling entity = repository.findById(schedulingId)
-                .orElseThrow(() -> new IllegalArgumentException("Scheduling não encontrado: " + schedulingId));
+        var schedule = this.repository.getReferenceById(schedulingId);
 
-        entity.setStatus(StatusEnum.CANCELED);
+        this.repository.delete(schedule);
 
-        Scheduling saved = repository.save(entity);
-        return mapper.toDto(saved);
+        return null;
     }
 }

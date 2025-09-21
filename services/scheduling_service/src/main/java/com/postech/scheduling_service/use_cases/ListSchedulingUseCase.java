@@ -13,34 +13,33 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class ListSchedulingUseCase implements UseCase<ListSchedulingUseCase.ListSchedulingParams, Page<SchedulingDto>> {
+public class ListSchedulingUseCase implements UseCase<Void, List<SchedulingDto>> {
 
     private final SchedulingRepository repository;
     private final SchedulingMapper mapper;
 
     @Override
     @Transactional(readOnly = true)
-    public Page<SchedulingDto> execute(ListSchedulingParams params) {
-        Pageable pageable = PageRequest.of(
-                Math.max(0, params.page()),
-                Math.max(1, params.size()),
-                params.sort() != null ? params.sort() : Sort.by(Sort.Direction.DESC, "startAt")
-        );
+    public List<SchedulingDto> execute(Void params) {
+        var schedules = this.repository.findAll();
 
-        StatusEnum statusEnum = null;
-        if (params.status() != null && !params.status().isBlank()) {
-            statusEnum = StatusEnum.valueOf(params.status().toUpperCase());
-        }
+        return schedules.stream()
+                .map(schedule -> new SchedulingDto(
+                        schedule.getId(),
+                        schedule.getPatientId(),
+                        schedule.getDoctorId(),
+                        schedule.getStartAt(),
+                        schedule.getEndAt(),
+                        schedule.getStatus().toString(),
+                        schedule.getCreatedAt(),
+                        schedule.getUpdatedAt()
 
-        Page<Scheduling> page = repository.findAllByFilters(
-                params.patientId(), params.doctorId(), statusEnum,
-                params.fromDate(), params.toDate(), pageable
-        );
-
-        return mapper.toDtoPage(page);
+                ))
+                .toList();
     }
 
     @Builder
