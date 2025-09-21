@@ -124,3 +124,33 @@ services:
       ports:
         - "2003:2003"
       restart: unless-stopped
+
+    history-postgres:
+      image: postgres:16-alpine
+      container_name: tc3-history-postgres
+      environment:
+        POSTGRES_USER: user
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: history_service
+      ports:
+        - "5432:5432"
+      volumes:
+        - ../services/history_service/db/init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
+      restart: unless-stopped
+
+    history-service:
+      build:
+        context: ..
+        dockerfile: services/history_service/Dockerfile
+      image: tc3/history-service:local
+      container_name: tc3-history-service
+      environment:
+        SERVER_PORT: 2002
+        SPRING_DATASOURCE_URL: jdbc:postgresql://history-postgres:5432/history_service
+        SPRING_DATASOURCE_USERNAME: user
+        SPRING_DATASOURCE_PASSWORD: password
+      depends_on:
+        - history-postgres
+      ports:
+        - "2002:2002"
+      restart: unless-stopped

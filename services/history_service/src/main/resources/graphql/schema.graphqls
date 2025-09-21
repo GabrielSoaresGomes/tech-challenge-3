@@ -1,0 +1,44 @@
+enum ConsultationStatus {
+    SCHEDULED
+    COMPLETED
+    CANCELLED
+    NO_SHOW
+    RESCHEDULED
+}
+
+scalar DateTime
+
+type ConsultationHistory {
+    id: ID!
+    consultationId: Int!
+    patientName: String!
+    doctorName: String!
+    consultationDate: DateTime!
+    status: ConsultationStatus!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+input RegisterConsultation {
+    consultationId: Int!
+    patientName: String!
+    doctorName: String!
+    consultationDate: String!
+    status: ConsultationStatus!
+}
+
+type RegisterConsultationResponse {
+    consultationHistoryId: ID!
+    consultationId: Int!
+    message: String!
+}
+
+extend type Query {
+    listConsultationHistory: [ConsultationHistory!]!
+    getConsultationHistoryByConsultationId(id: Int!): [ConsultationHistory!]!
+    getConsultationHistoryByPatientName(name: String!): [ConsultationHistory!]!
+}
+
+extend type Mutation {
+    registerConsultation(consultation: RegisterConsultation!): RegisterConsultationResponse!
+}
