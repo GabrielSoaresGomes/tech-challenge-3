@@ -31,3 +31,4 @@ spring:
 app:
   services:
     auth: ${AUTH_MS_URL:http://localhost:8081}
+    history: ${HISTORY_MS_URL:http://localhost:2002/graphql}

@@ -1,11 +1,12 @@
 package com.postech.scheduling_service.use_cases;
 
+import com.postech.scheduling_service.client.HistoryClient;
 import com.postech.scheduling_service.client.UserClient;
 import com.postech.scheduling_service.dto.CreateSchedulingDto;
 import com.postech.scheduling_service.dto.SchedulingDto;
 import com.postech.scheduling_service.dto.UserDto;
+import com.postech.scheduling_service.dto.history.RegisterConsultationDto;
 import com.postech.scheduling_service.entity.Scheduling;
-import com.postech.scheduling_service.enums.StatusEnum;
 import com.postech.scheduling_service.mapper.SchedulingMapper;
 import com.postech.scheduling_service.repository.SchedulingRepository;
 import com.postech.scheduling_service.use_cases.base.UseCase;
@@ -14,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @RequiredArgsConstructor
 @Component
 @Slf4j
@@ -23,6 +22,7 @@ public class CreateSchedulingUseCase implements UseCase<CreateSchedulingDto, Sch
     private final SchedulingRepository repository;
     private final SchedulingMapper mapper;
     private final UserClient userClient;
+    private final HistoryClient historyClient;
 
     @Override
     public SchedulingDto execute(CreateSchedulingDto params) {
@@ -34,20 +34,28 @@ public class CreateSchedulingUseCase implements UseCase<CreateSchedulingDto, Sch
 
         log.info("Agendamento salvo com sucesso: {}", saved);
 
-        Long patientId = scheduling.getPatientId();
-        Long doctorId = scheduling.getDoctorId();
+        Long patientId = saved.getPatientId();
+        Long doctorId  = saved.getDoctorId();
 
-        UserDto patient = safeGetUser(patientId, "Paciente");
-        UserDto doctor  = safeGetUser(doctorId,  "Doutor");
+        var patient = safeGetUser(patientId, "Paciente");
+        var doctor  = safeGetUser(doctorId,  "Doutor");
 
-        Long schedulingId = saved.getId();
-        StatusEnum schedulingStatus = scheduling.getStatus();
-        LocalDateTime schedulingTime = scheduling.getStartAt();
-        String patientName = patient != null ? patient.name() : "Paciente#" + patientId;
-        String doctorName  = doctor  != null ? doctor.name()  : "Doutor#"   + doctorId;
+        var registerDto = new RegisterConsultationDto(
+                saved.getId(),
+                patient != null ? patient.name() : "Paciente#" + patientId,
+                doctor  != null ? doctor.name()  : "Doutor#"   + doctorId,
+                saved.getStartAt(),
+                saved.getStatus()
+        );
 
-        log.info("Scheduling created: id={}, status={}, time={}, patientId={}, patientName={}, doctorId={}, doctorName={}",
-                schedulingId, schedulingStatus, schedulingTime, patientId, patientName, doctorId, doctorName);
+        log.info("Dados para histórico de consultas: {}", registerDto);
+
+        try {
+            var resp = historyClient.registerConsultation(registerDto);
+            log.info("Histórico registrado: {}", resp);
+        } catch (Exception e) {
+            log.error("Falha ao registrar histórico via GraphQL", e);
+        }
 
         return mapper.toDto(saved);
     }

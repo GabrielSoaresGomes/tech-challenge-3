@@ -118,6 +118,7 @@ services:
         SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
 
         AUTH_MS_URL: http://tc3-auth-service:8081
+        HISTORY_MS_URL: http://tc3-history-service:2002/graphql
       depends_on:
         rabbitmq:
           condition: service_healthy
