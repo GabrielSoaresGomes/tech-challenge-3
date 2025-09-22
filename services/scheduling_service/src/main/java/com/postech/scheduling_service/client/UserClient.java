@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(
         name = "auth",
         url = "${app.services.auth}",
-        configuration = FeignHeadersConfig.class
+        configuration = FeignHeadersConfig.class,
+        dismiss404 = true
 )
 public interface UserClient {
     @GetMapping("/internal/user/{id}")

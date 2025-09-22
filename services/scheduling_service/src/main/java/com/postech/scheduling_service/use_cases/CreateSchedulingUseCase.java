@@ -9,6 +9,7 @@ import com.postech.scheduling_service.enums.StatusEnum;
 import com.postech.scheduling_service.mapper.SchedulingMapper;
 import com.postech.scheduling_service.repository.SchedulingRepository;
 import com.postech.scheduling_service.use_cases.base.UseCase;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -36,18 +37,42 @@ public class CreateSchedulingUseCase implements UseCase<CreateSchedulingDto, Sch
         Long patientId = scheduling.getPatientId();
         Long doctorId = scheduling.getDoctorId();
 
-        UserDto patient = userClient.getUser(patientId);
-        UserDto doctor = userClient.getUser(doctorId);
+        UserDto patient = safeGetUser(patientId, "Paciente");
+        UserDto doctor  = safeGetUser(doctorId,  "Doutor");
 
         Long schedulingId = saved.getId();
         StatusEnum schedulingStatus = scheduling.getStatus();
         LocalDateTime schedulingTime = scheduling.getStartAt();
-        String patientName = patient.name();
-        String doctorName = doctor.name();
+        String patientName = patient != null ? patient.name() : "Paciente#" + patientId;
+        String doctorName  = doctor  != null ? doctor.name()  : "Doutor#"   + doctorId;
 
         log.info("Scheduling created: id={}, status={}, time={}, patientId={}, patientName={}, doctorId={}, doctorName={}",
                 schedulingId, schedulingStatus, schedulingTime, patientId, patientName, doctorId, doctorName);
 
         return mapper.toDto(saved);
+    }
+
+    private UserDto safeGetUser(Long id, String roleLabel) {
+        try {
+            return userClient.getUser(id);
+        } catch (FeignException.Unauthorized e) {
+            log.error("{} id={} não autorizado no auth-service (401).", roleLabel, id);
+            return null;
+        } catch (FeignException e) {
+            log.error("Erro ao obter {} id={} no auth-service: status={}, body={}",
+                    roleLabel, id, e.status(), safeBody(e));
+            return null;
+        } catch (Exception e) {
+            log.error("Falha inesperada ao obter {} id={} no auth-service", roleLabel, id, e);
+            return null;
+        }
+    }
+
+    private String safeBody(FeignException e) {
+        try {
+            return e.contentUTF8();
+        } catch (Exception ex) {
+            return "<no-body>";
+        }
     }
 }
