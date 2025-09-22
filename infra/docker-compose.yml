@@ -35,7 +35,7 @@ services:
         - SPRING_DATASOURCE_USERNAME=root
         - SPRING_DATASOURCE_PASSWORD=root
         - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
-        - TRUSTED_HOSTS=http://tc3-test-service
+        - TRUSTED_HOSTS=http://tc3-test-service,http://tc3-scheduling-service
       restart: unless-stopped
       depends_on:
         - auth-postgres
@@ -116,6 +116,8 @@ services:
         SPRING_DATASOURCE_USERNAME: root
         SPRING_DATASOURCE_PASSWORD: root
         SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+
+        AUTH_MS_URL: http://tc3-auth-service:8081
       depends_on:
         rabbitmq:
           condition: service_healthy
