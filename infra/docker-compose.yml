@@ -1,103 +1,158 @@
 name: tech-challenge-03
 
 services:
-  gateway-service:
-    build:
-      context: ..
-      dockerfile: services/gateway_service/Dockerfile
-    image: tc3/gateway-service:local
-    container_name: tc3-gateway-service
-    environment:
-      - AUTH_MS_URL=http://tc3-auth-service:8081
-      - TEST_MS_URL=http://tc3-test-service:8082
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
+    gateway-service:
+      build:
+        context: ..
+        dockerfile: services/gateway_service/Dockerfile
+      image: tc3/gateway-service:local
+      container_name: tc3-gateway-service
+      environment:
+        - AUTH_MS_URL=http://tc3-auth-service:8081
+        - TEST_MS_URL=http://tc3-test-service:8082
+      ports:
+        - "8080:8080"
+      restart: unless-stopped
 
-  auth-postgres:
-    image: postgres:latest
-    container_name: tc3-auth-postgres
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=tech-challenge-03-auth
-    ports:
-      - "5433:5432"
+    auth-postgres:
+      image: postgres:latest
+      container_name: tc3-auth-postgres
+      environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
+        - POSTGRES_DB=tech-challenge-03-auth
+      ports:
+        - "5433:5432"
 
-  auth-service:
-    build:
-      context: ..
-      dockerfile: services/auth_service/Dockerfile
-    image: tc3/auth-service:local
-    container_name: tc3-auth-service
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://tc3-auth-postgres:5432/tech-challenge-03-auth
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
-      - TRUSTED_HOSTS=http://tc3-test-service
-    restart: unless-stopped
-    depends_on:
-      - auth-postgres
+    auth-service:
+      build:
+        context: ..
+        dockerfile: services/auth_service/Dockerfile
+      image: tc3/auth-service:local
+      container_name: tc3-auth-service
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://tc3-auth-postgres:5432/tech-challenge-03-auth
+        - SPRING_DATASOURCE_USERNAME=root
+        - SPRING_DATASOURCE_PASSWORD=root
+        - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
+        - TRUSTED_HOSTS=http://tc3-test-service,http://tc3-scheduling-service
+      restart: unless-stopped
+      depends_on:
+        - auth-postgres
 
-  test-service:
-    build:
-      context: ..
-      dockerfile: services/test_service/Dockerfile
-    image: tc3/test-service:local
-    container_name: tc3-test-service
-    environment:
-      - AUTH_MS_URL=http://tc3-auth-service:8081
-    restart: unless-stopped
+    test-service:
+      build:
+        context: ..
+        dockerfile: services/test_service/Dockerfile
+      image: tc3/test-service:local
+      container_name: tc3-test-service
+      environment:
+        - AUTH_MS_URL=http://tc3-auth-service:8081
+      restart: unless-stopped
 
-  rabbitmq:
-    image: rabbitmq:3.13-management-alpine
-    container_name: tc3-rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: 123456
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
+    rabbitmq:
+      image: rabbitmq:3.13-management-alpine
+      container_name: tc3-rabbitmq
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      environment:
+        RABBITMQ_DEFAULT_USER: user
+        RABBITMQ_DEFAULT_PASS: 123456
+      healthcheck:
+        test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+      restart: unless-stopped
 
-  api-gateway:
-    build:
-      context: ..
-      dockerfile: services/api_gateway/Dockerfile
-    image: tc3/api-gateway:local
-    container_name: tc3-api-gateway
-    environment:
-      SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_RABBITMQ_PORT: 5672
-      SPRING_RABBITMQ_USERNAME: user
-      SPRING_RABBITMQ_PASSWORD: 123456
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    ports:
-      - "2004:2004"
-    restart: unless-stopped
+    api-gateway:
+      build:
+        context: ..
+        dockerfile: services/api_gateway/Dockerfile
+      image: tc3/api-gateway:local
+      container_name: tc3-api-gateway
+      environment:
+        SPRING_RABBITMQ_HOST: rabbitmq
+        SPRING_RABBITMQ_PORT: 5672
+        SPRING_RABBITMQ_USERNAME: user
+        SPRING_RABBITMQ_PASSWORD: 123456
+      depends_on:
+        rabbitmq:
+          condition: service_healthy
+      ports:
+        - "2004:2004"
+      restart: unless-stopped
 
-  scheduling-service:
-    build:
-      context: ..
-      dockerfile: services/scheduling_service/Dockerfile
-    image: tc3/scheduling-service:local
-    container_name: tc3-scheduling-service
-    environment:
-      SPRING_RABBITMQ_HOST: rabbitmq
-      SPRING_RABBITMQ_PORT: 5672
-      SPRING_RABBITMQ_USERNAME: user
-      SPRING_RABBITMQ_PASSWORD: 123456
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    ports:
-      - "2003:2003"
-    restart: unless-stopped
+    scheduling-postgres:
+      image: postgres:16-alpine
+      container_name: tc3-scheduling-postgres
+      environment:
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=root
+        - POSTGRES_DB=tech-challenge-03-scheduling
+      ports:
+        - "5434:5432"
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U root -d tech-challenge-03-scheduling"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+      restart: unless-stopped
+
+    scheduling-service:
+      build:
+        context: ..
+        dockerfile: services/scheduling_service/Dockerfile
+      image: tc3/scheduling-service:local
+      container_name: tc3-scheduling-service
+      environment:
+        SPRING_RABBITMQ_HOST: rabbitmq
+        SPRING_RABBITMQ_PORT: 5672
+        SPRING_RABBITMQ_USERNAME: user
+        SPRING_RABBITMQ_PASSWORD: 123456
+
+        SPRING_DATASOURCE_URL: jdbc:postgresql://tc3-scheduling-postgres:5432/tech-challenge-03-scheduling
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: root
+        SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+
+        AUTH_MS_URL: http://tc3-auth-service:8081
+      depends_on:
+        rabbitmq:
+          condition: service_healthy
+        scheduling-postgres:
+          condition: service_healthy
+      ports:
+        - "2003:2003"
+      restart: unless-stopped
+
+    history-postgres:
+      image: postgres:16-alpine
+      container_name: tc3-history-postgres
+      environment:
+        POSTGRES_USER: user
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: history_service
+      ports:
+        - "5432:5432"
+      volumes:
+        - ../services/history_service/db/init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
+      restart: unless-stopped
+
+    history-service:
+      build:
+        context: ..
+        dockerfile: services/history_service/Dockerfile
+      image: tc3/history-service:local
+      container_name: tc3-history-service
+      environment:
+        SERVER_PORT: 2002
+        SPRING_DATASOURCE_URL: jdbc:postgresql://history-postgres:5432/history_service
+        SPRING_DATASOURCE_USERNAME: user
+        SPRING_DATASOURCE_PASSWORD: password
+      depends_on:
+        - history-postgres
+      ports:
+        - "2002:2002"
+      restart: unless-stopped
