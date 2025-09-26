@@ -136,7 +136,7 @@ services:
         POSTGRES_PASSWORD: password
         POSTGRES_DB: history_service
       ports:
-        - "5432:5432"
+        - "5542:5432"
       volumes:
         - ../services/history_service/db/init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
       restart: unless-stopped
