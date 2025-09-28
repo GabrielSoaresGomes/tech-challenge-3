@@ -3,7 +3,11 @@ server:
 
 spring:
   application:
-    name: scheduling-service
+    name: scheduling
+
+  cloud:
+    client:
+      hostname: localhost
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://tc3-scheduling-postgres:5432/tech-challenge-03-scheduling}
@@ -31,3 +35,13 @@ spring:
 app:
   services:
     auth: ${AUTH_MS_URL:http://localhost:8081}
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: ${SERVICE_REGISTRY_URL:http://localhost:8761/eureka/}
+
+jwt:
+  public.key: classpath:app.pub

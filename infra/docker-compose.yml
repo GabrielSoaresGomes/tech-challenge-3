@@ -10,6 +10,7 @@ services:
       environment:
         - AUTH_MS_URL=http://tc3-auth-service:8081
         - TEST_MS_URL=http://tc3-test-service:8082
+        - SCHEDULING_MS_URL=http://tc3-scheduling-service:2003
       ports:
         - "8080:8080"
       restart: unless-stopped
@@ -155,4 +156,31 @@ services:
         - history-postgres
       ports:
         - "2002:2002"
+      restart: unless-stopped
+
+    mailhog:
+      image: mailhog/mailhog
+      container_name: mailhog
+      ports:
+        - "1025:1025"
+        - "8025:8025"
+
+    notification-service:
+      build:
+        context: ..
+        dockerfile: services/notification_service/Dockerfile
+      image: tc3/notification-service:local
+      container_name: tc3-notification-service
+      environment:
+        SPRING_RABBITMQ_HOST: rabbitmq
+        SPRING_RABBITMQ_PORT: 5672
+        SPRING_RABBITMQ_USERNAME: user
+        SPRING_RABBITMQ_PASSWORD: 123456
+
+        SPRING_MAIL_HOST: mailhog
+        SPRING_MAIL_PORT: 1025
+      depends_on:
+        - scheduling-service
+        - mailhog
+
       restart: unless-stopped

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/schedulings", produces = "application/json")
+@RequestMapping(name = "scheduling", produces = "application/json")
 @RequiredArgsConstructor
 public class SchedulingController {
 
