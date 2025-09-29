@@ -24,6 +24,12 @@ spring:
                 - Path=/test/**
               filters:
                 - StripPrefix=1
+            - id: scheduling
+              uri: ${SCHEDULING_MS_URL:http://localhost:2003}
+              predicates:
+                - Path=/scheduling/**
+              filters:
+                - StripPrefix=1
 
 logging:
   level:
