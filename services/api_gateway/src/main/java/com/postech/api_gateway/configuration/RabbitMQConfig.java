@@ -24,6 +24,8 @@ public class RabbitMQConfig {
     public static final String DELETE_HISTORY_SCHEDULING_CANCELED_QUEUE = "delete_history_scheduling_canceled_queue";
     public static final String APPOINTMENT_SCHEDULED_ROUTING_KEY_V1 = "appointment.scheduled.v1";
     public static final String APPOINTMENT_CANCELED_ROUTING_KEY_V1  = "appointment.canceled.v1";
+    public static final String NOTIFY_SCHEDULING_CREATED_ROUTING_KEY_V1 = "notify.scheduling.create.v1";
+    public static final String NOTIFY_SCHEDULING_CANCELED_ROUTING_KEY_V1 = "notify.scheduling.cancel.v1";
 
     // --- Commands (Direct) ---
     @Bean
@@ -63,7 +65,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue notifySchedulingCreatedQueue() {
-        return QueueBuilder.durable(NOTIFY_SCHEDULING_CREATED_QUEUE).build();
+            return QueueBuilder.durable(NOTIFY_SCHEDULING_CREATED_QUEUE).build();
     }
 
     @Bean

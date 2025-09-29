@@ -1,0 +1,24 @@
+server:
+  port: 2004
+
+spring:
+  application:
+    name: notification_service
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:user}
+    password: ${SPRING_RABBITMQ_PASSWORD:123456}
+
+  mail:
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:1025}
+    username: nao-responda@teste.com
+    password: fake
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
