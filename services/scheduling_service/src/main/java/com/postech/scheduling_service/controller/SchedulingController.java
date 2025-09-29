@@ -3,7 +3,11 @@ package com.postech.scheduling_service.controller;
 import com.postech.scheduling_service.dto.CreateSchedulingDto;
 import com.postech.scheduling_service.dto.SchedulingDto;
 import com.postech.scheduling_service.dto.UpdateSchedulingDto;
+import com.postech.scheduling_service.dto.history.ConsultationDto;
 import com.postech.scheduling_service.use_cases.*;
+import com.postech.scheduling_service.use_cases.history.GetHistoryByPatientNameUseCase;
+import com.postech.scheduling_service.use_cases.history.GetSchedulingHistoryUseCase;
+import com.postech.scheduling_service.use_cases.history.ListConsultationHistoryUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,9 @@ public class SchedulingController {
     private final FindSchedulingUseCase findUC;
     private final ListSchedulingUseCase listUC;
     private final CancellationSchedulingUseCase cancelUC;
+    private final GetSchedulingHistoryUseCase getSchedulingHistoryUC;
+    private final ListConsultationHistoryUseCase listConsultationHistoryUC;
+    private final GetHistoryByPatientNameUseCase getHistoryByPatientNameUC;
 
     @PostMapping(consumes = "application/json")
     public SchedulingDto create(@Validated @RequestBody CreateSchedulingDto dto) {
@@ -47,5 +54,20 @@ public class SchedulingController {
     @DeleteMapping("/{id}")
     public void cancel(@PathVariable("id") Long id) {
         this.cancelUC.execute(id);
+    }
+
+    @GetMapping("/history")
+    public List<ConsultationDto> listAllHistory() {
+        return listConsultationHistoryUC.execute(null);
+    }
+
+    @GetMapping("/history/by-patient")
+    public List<ConsultationDto> getHistoryByPatient(@RequestParam("name") String name) {
+        return getHistoryByPatientNameUC.execute(name);
+    }
+
+    @GetMapping("/{schedulingId}/history")
+    public List<ConsultationDto> getSchedulingHistory(@PathVariable("schedulingId") Long schedulingId) {
+        return getSchedulingHistoryUC.execute(schedulingId);
     }
 }

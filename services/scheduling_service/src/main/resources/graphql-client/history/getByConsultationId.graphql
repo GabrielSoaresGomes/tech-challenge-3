@@ -1,0 +1,5 @@
+query GetByConsultationId($id: Int!) {
+    getConsultationHistoryByConsultationId(id: $id) {
+        ...ConsultationFields
+    }
+}

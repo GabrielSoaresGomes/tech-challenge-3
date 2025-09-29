@@ -1,0 +1,7 @@
+mutation RegisterConsultation($consultation: RegisterConsultation!) {
+    registerConsultation(consultation: $consultation) {
+        consultationHistoryId
+        consultationId
+        message
+    }
+}
