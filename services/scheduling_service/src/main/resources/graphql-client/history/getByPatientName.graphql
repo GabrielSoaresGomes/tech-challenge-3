@@ -1,0 +1,5 @@
+query GetByPatientName($name: String!) {
+    getConsultationHistoryByPatientName(name: $name) {
+        ...ConsultationFields
+    }
+}

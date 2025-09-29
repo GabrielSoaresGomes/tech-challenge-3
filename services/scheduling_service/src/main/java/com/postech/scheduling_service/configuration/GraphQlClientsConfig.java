@@ -1,4 +1,3 @@
-// com.postech.scheduling_service.configuration.GraphQlClientsConfig
 package com.postech.scheduling_service.configuration;
 
 import org.springframework.beans.factory.annotation.Value;

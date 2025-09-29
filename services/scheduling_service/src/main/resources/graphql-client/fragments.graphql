@@ -1,0 +1,10 @@
+fragment ConsultationFields on ConsultationHistory {
+    id
+    consultationId
+    patientName
+    doctorName
+    consultationDate
+    status
+    createdAt
+    updatedAt
+}
