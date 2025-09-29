@@ -67,24 +67,6 @@ services:
         retries: 5
       restart: unless-stopped
 
-    api-gateway:
-      build:
-        context: ..
-        dockerfile: services/api_gateway/Dockerfile
-      image: tc3/api-gateway:local
-      container_name: tc3-api-gateway
-      environment:
-        SPRING_RABBITMQ_HOST: rabbitmq
-        SPRING_RABBITMQ_PORT: 5672
-        SPRING_RABBITMQ_USERNAME: user
-        SPRING_RABBITMQ_PASSWORD: 123456
-      depends_on:
-        rabbitmq:
-          condition: service_healthy
-      ports:
-        - "2004:2004"
-      restart: unless-stopped
-
     scheduling-postgres:
       image: postgres:16-alpine
       container_name: tc3-scheduling-postgres
