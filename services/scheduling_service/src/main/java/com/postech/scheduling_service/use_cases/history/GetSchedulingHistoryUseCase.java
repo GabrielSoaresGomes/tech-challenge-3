@@ -2,7 +2,6 @@ package com.postech.scheduling_service.use_cases.history;
 
 import com.postech.scheduling_service.client.HistoryClient;
 import com.postech.scheduling_service.dto.history.ConsultationDto;
-import com.postech.scheduling_service.repository.SchedulingRepository;
 import com.postech.scheduling_service.use_cases.base.UseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

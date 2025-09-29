@@ -1,13 +1,8 @@
 package com.postech.scheduling_service.use_cases;
 
-import com.postech.scheduling_service.client.HistoryClient;
-import com.postech.scheduling_service.client.UserClient;
 import com.postech.scheduling_service.dto.SchedulingDto;
-import com.postech.scheduling_service.dto.history.RegisterConsultationDto;
-import com.postech.scheduling_service.enums.StatusEnum;
 import com.postech.scheduling_service.repository.SchedulingRepository;
 import com.postech.scheduling_service.use_cases.base.UseCase;
-import com.postech.scheduling_service.utils.FeignSafeUtils;
 import com.postech.scheduling_service.utils.HistoryRegister;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CancellationSchedulingUseCase implements UseCase<Long, SchedulingDto> {
 
     private final SchedulingRepository repository;
-    private final UserClient userClient;
     private final HistoryRegister historyRegister;
 
     @Override
