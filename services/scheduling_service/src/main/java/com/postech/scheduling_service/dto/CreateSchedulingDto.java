@@ -1,7 +1,7 @@
 package com.postech.scheduling_service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 

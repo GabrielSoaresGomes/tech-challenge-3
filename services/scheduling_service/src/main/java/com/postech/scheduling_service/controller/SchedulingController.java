@@ -31,9 +31,8 @@ public class SchedulingController {
     private final GetHistoryByPatientNameUseCase getHistoryByPatientNameUC;
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<SchedulingDto> create(@Validated @RequestBody CreateSchedulingDto dto) {
-        var created = createUC.execute(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public SchedulingDto create(@Validated @RequestBody CreateSchedulingDto dto) {
+        return createUC.execute(dto);
     }
 
     @PutMapping("/{id}")
