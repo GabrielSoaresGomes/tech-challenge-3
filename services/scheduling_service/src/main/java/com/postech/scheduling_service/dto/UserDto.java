@@ -1,4 +1,6 @@
 package com.postech.scheduling_service.dto;
 
-public record UserDto(Long id, String username, String name, String email) {
+import com.postech.scheduling_service.enums.UserRole;
+
+public record UserDto(Long id, String username, String name, String email, UserRole role) {
 }

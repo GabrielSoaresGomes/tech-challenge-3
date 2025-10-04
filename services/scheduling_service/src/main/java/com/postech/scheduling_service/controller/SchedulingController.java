@@ -8,8 +8,8 @@ import com.postech.scheduling_service.use_cases.*;
 import com.postech.scheduling_service.use_cases.history.GetHistoryByPatientNameUseCase;
 import com.postech.scheduling_service.use_cases.history.GetSchedulingHistoryUseCase;
 import com.postech.scheduling_service.use_cases.history.ListConsultationHistoryUseCase;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class SchedulingController {
     private final GetHistoryByPatientNameUseCase getHistoryByPatientNameUC;
 
     @PostMapping(consumes = "application/json")
-    public SchedulingDto create(@Validated @RequestBody CreateSchedulingDto dto) {
+    public SchedulingDto create(@Validated @RequestBody @Valid CreateSchedulingDto dto) {
         return createUC.execute(dto);
     }
 

@@ -30,10 +30,10 @@ public class SchedulingMapper {
     public Scheduling toEntity(CreateSchedulingDto dto) {
         if (dto == null) return null;
         var e = new Scheduling();
-        e.setPatientId(dto.patientId());
-        e.setDoctorId(dto.doctorId());
-        e.setStartAt(dto.startAt());
-        e.setEndAt(dto.endAt());
+        e.setPatientId(dto.getPatientId());
+        e.setDoctorId(dto.getDoctorId());
+        e.setStartAt(dto.getStartAt());
+        e.setEndAt(dto.getEndAt());
         e.setStatus(StatusEnum.SCHEDULED);
         return e;
     }
