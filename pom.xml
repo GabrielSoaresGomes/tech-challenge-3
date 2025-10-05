@@ -14,8 +14,6 @@
     <modules>
         <module>services/gateway_service</module>
         <module>services/auth_service</module>
-        <module>services/test_service</module>
-        <module>services/api_gateway</module>
         <module>services/history_service</module>
         <module>services/notification_service</module>
         <module>services/scheduling_service</module>

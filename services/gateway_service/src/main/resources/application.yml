@@ -18,12 +18,6 @@ spring:
                 - Path=/auth/**
               filters:
                 - StripPrefix=1
-            - id: test
-              uri: ${TEST_MS_URL:http://localhost:8082}
-              predicates:
-                - Path=/test/**
-              filters:
-                - StripPrefix=1
             - id: scheduling
               uri: ${SCHEDULING_MS_URL:http://localhost:2003}
               predicates:

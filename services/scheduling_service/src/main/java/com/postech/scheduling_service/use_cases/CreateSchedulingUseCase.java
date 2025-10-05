@@ -78,7 +78,7 @@ public class CreateSchedulingUseCase implements UseCase<CreateSchedulingDto, Sch
             throw new EntityNotFoundException(msg);
         } catch (FeignException error) {
             String msg = "Falha ao consultar " + roleLabel.toLowerCase() + " (id " + userId + ") no serviço de usuários.";
-            log.warn("{} Status remoto: {}", msg, error.status());
+            log.warn("{} Erro: {}. Status remoto: {}", msg, error.getMessage(), error.status());
             throw new RuntimeException(msg);
         }
     }

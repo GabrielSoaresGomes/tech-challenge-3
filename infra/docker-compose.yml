@@ -9,7 +9,6 @@ services:
       container_name: tc3-gateway-service
       environment:
         - AUTH_MS_URL=http://tc3-auth-service:8081
-        - TEST_MS_URL=http://tc3-test-service:8082
         - SCHEDULING_MS_URL=http://tc3-scheduling-service:2003
       ports:
         - "8080:8080"
@@ -36,20 +35,10 @@ services:
         - SPRING_DATASOURCE_USERNAME=root
         - SPRING_DATASOURCE_PASSWORD=root
         - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
-        - TRUSTED_HOSTS=http://tc3-test-service,http://tc3-scheduling-service
+        - TRUSTED_HOSTS=http://tc3-scheduling-service
       restart: unless-stopped
       depends_on:
         - auth-postgres
-
-    test-service:
-      build:
-        context: ..
-        dockerfile: services/test_service/Dockerfile
-      image: tc3/test-service:local
-      container_name: tc3-test-service
-      environment:
-        - AUTH_MS_URL=http://tc3-auth-service:8081
-      restart: unless-stopped
 
     rabbitmq:
       image: rabbitmq:3.13-management-alpine
