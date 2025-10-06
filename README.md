@@ -1,12 +1,14 @@
-🏥 Tech Challenge 03 — Medical Scheduling Platform
-📖 Visão Geral
+#🏥 Tech Challenge 03 — Medical Scheduling Platform
+
+##📖 Visão Geral
 
 O Tech Challenge 03 é um sistema distribuído baseado em microserviços desenvolvido com Java 21 e Spring Boot, que gerencia o fluxo completo de agendamentos médicos — desde autenticação e criação/cancelamento até notificações e histórico de alterações.
 
 A arquitetura utiliza Spring Cloud Gateway, RabbitMQ, MailHog e GraphQL, com persistência em bancos PostgreSQL e execução orquestrada via Docker Compose.
 
-🧩 Arquitetura dos Serviços
-🌐 Gateway Service
+##🧩 Arquitetura dos Serviços
+
+###🌐 Gateway Service
 
 Porta: 8080
 
@@ -24,7 +26,7 @@ Roteamento e balanceamento de requisições (via Spring Cloud Gateway WebFlux)
 
 Controle de autenticação e passagem do token JWT entre microserviços
 
-🔐 Auth Service
+###🔐 Auth Service
 
 Porta: 8081 (interna)
 
@@ -40,7 +42,7 @@ Autenticação e autorização via Spring Security + JWT
 
 Gerenciamento de usuários e perfis
 
-🩺 Scheduling Service
+###🩺 Scheduling Service
 
 Porta: 2003
 
@@ -66,7 +68,7 @@ Registro de mensagens no RabbitMQ para envio de notificações
 
 Comunicação com o History Service para registro das alterações
 
-📨 Notification Service
+###📨 Notification Service
 
 Imagem: tc3/notification-service:local
 
@@ -86,7 +88,7 @@ Enviar e-mails de criação/cancelamento de consultas para os pacientes
 
 Usa o MailHog como servidor SMTP local
 
-🕒 History Service
+###🕒 History Service
 
 Porta: 2002
 
@@ -102,7 +104,7 @@ Registrar e consultar históricos de alterações de agendamentos
 
 Expor e consumir dados via GraphQL
 
-🐇 RabbitMQ
+###🐇 RabbitMQ
 
 Porta de aplicação: 5672
 
@@ -112,7 +114,7 @@ Usuário/Senha: user / 123456
 
 Responsável pela mensageria entre o scheduling-service e o notification-service
 
-📬 MailHog
+###📬 MailHog
 
 SMTP fake server
 
@@ -122,7 +124,7 @@ Painel Web: http://localhost:8025
 
 Usado para visualizar os e-mails enviados pelo notification-service durante o desenvolvimento
 
-⚙️ Tecnologias Utilizadas
+##⚙️ Tecnologias Utilizadas
 Categoria	Tecnologia
 Linguagem	Java 21
 Framework	Spring Boot 3.x
@@ -133,8 +135,8 @@ Comunicação	GraphQL
 E-mail	MailHog (SMTP fake)
 Banco de Dados	PostgreSQL
 Contêinerização	Docker e Docker Compose
-🐳 Execução com Docker
-🧰 Pré-requisitos
+
+##🧰 Pré-requisitos
 
 Docker
 
@@ -143,7 +145,7 @@ Docker Compose
 (Opcional) Java 21+
  caso queira rodar os serviços localmente
 
-🚀 Subindo o ambiente completo
+##🚀 Subindo o ambiente completo
 
 Execute o comando: docker-compose up --build;
 
@@ -151,7 +153,7 @@ Acesse o serviço de autenticação e crie um usuário com a role doctor e patie
 
 Faça login com o doctor e faça um agendamento;
 
-🔁 Fluxo de Funcionamento
+##🔁 Fluxo de Funcionamento
 
 O usuário autentica-se via Auth Service e recebe um token JWT.
 
