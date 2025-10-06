@@ -1,4 +1,4 @@
-#🏥 Tech Challenge 03 — Medical Scheduling Platform
+# 🏥 Tech Challenge 03 — Medical Scheduling Platform
 
 ##📖 Visão Geral
 
